@@ -60,10 +60,10 @@ block-based), and mutation driven by the token statistics of the repository.
 
 ## Key results
 
-Under the white-box setting, UniBreak improves the attack success rate over the
-strongest baseline by **62.36**, **57.89** and **64.81** percentage points on the
-three victim models reported in the paper. The framework also transfers to
-other scenarios and model sizes.
+Under the white-box setting, UniBreak increases the attack success rate by
+**62.36%**, **57.89%** and **64.81%** over the baseline methods on the three
+victim models reported in the paper. The framework also transfers to other
+scenarios and model sizes.
 
 <p align="center">
   <img src="docs/figures/fig8_whitebox.png" alt="White-box performance" width="940">
@@ -72,7 +72,8 @@ other scenarios and model sizes.
 <p align="center"><em>
 Fig. 8. The performance of attacking three different models under the white-box
 scenario, against AutoDAN-GA, AutoDAN-HGA, GCG and AmpleGCG. Reported metrics are
-ASR (attack success rate), TGAE (average generations to a success) and AGAE.
+ASR (attack success rate) and TGAE / AGAE (Top-1 / average generalizability of the
+adversarial example).
 </em></p>
 
 ## Installation
