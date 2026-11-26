@@ -20,6 +20,14 @@ runs/
 results/
 adv_library/
 
+# Offline experiment/analysis tooling (maintained out-of-repo; depends on private results/)
+exp.py
+data_analysis.py
+c-statistic.py
+hotmap.py
+temp.py
+test.py
+
 # VSCode / IDE
 .vscode/
 .idea/

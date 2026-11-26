@@ -1,28 +1,38 @@
 # Unibreak-Code
 
-A genetic-algorithm (GA) based framework for adversarial attacks on aligned large
-language models. It searches for adversarial suffixes / prefixes that bypass the
-safety alignment of both open-source and commercial (API-based) models.
+A genetic-algorithm (GA) based framework for adversarial attacks against aligned
+large language models. It searches for adversarial suffixes / prefixes that bypass
+the safety alignment of both open-source and commercial (API-based) models.
 
-> ⚠️ **Research purpose only.** This project is published for academic research and
-> responsible disclosure. The methods here can be used to probe safety alignment of
-> LLMs and to improve defence research. Do not use it against models you are not
-> authorised to test, or for unlawful purposes.
+> ⚠️ **Research purpose only.** Published for academic research and responsible
+> disclosure. Use it only to probe safety alignment of LLMs and to improve defence
+> research. Do not use it against models you are not authorised to test, or for any
+> unlawful purpose.
 
-## What this repo contains
+## Repository layout
 
-- `GA_based_methods/` — the core GA attack framework (original work):
-  - `Encoder.py` — adversarial token encoding & perturbation sampling
-  - `Fitness_calcution.py` — attack success detection + loss-based fitness scoring
-  - `GA.py` — genetic algorithm core (gradient-guided evolution, crossover, mutation)
-  - `Attack_manager.py` — orchestration: model load, adversarial library, replay & attack
-  - `Adv_libraray.py` — adversarial-sample library (dedup, top-k retrieval, token stats)
-  - `Model_manager.py` — model wrapper for open-source & OpenAI/DashScope-compatible APIs
-  - `Utils.py` — config loading
-- `configs/` — YAML attack configuration files
-- Dependency (third-party, under `dependency/`): the [llm-attacks / GCG](https://github.com/llm-attacks/llm-attacks) baseline
-  (MIT license), including `minimal_gcg` used at runtime by `Attack_manager`.
-- Top-level scripts — runnable demos & experiments (see below).
+```
+├── GA_based_methods/     # Core GA attack framework (original work)
+│   ├── Encoder.py            # Adversarial token encoding & perturbation sampling
+│   ├── Fitness_calcution.py  # Attack-success detection + loss-based fitness scoring
+│   ├── GA.py                 # GA core: gradient-guided evolution, crossover, mutation
+│   ├── Attack_manager.py     # Orchestration: model load, library, replay & attack
+│   ├── Adv_libraray.py       # Adversarial-sample library (dedup, top-k, token stats)
+│   ├── Model_manager.py      # Model wrapper for open-source & OpenAI/DashScope APIs
+│   ├── Utils.py              # Config loading
+│   └── __init__.py
+├── configs/               # YAML attack configurations
+├── dependency/            # Third-party GCG baseline (llm-attacks, MIT)
+├── attack_demo.py         # Local model inference demo
+├── demo.py                # API + local model demo
+├── replay_adv.py          # Replay an existing adversarial suffix
+├── run_ga.py              # Single-target attack (debug config)
+├── run_harmful_behaviors.py  # Batch attack over a dataset + ASR metrics
+├── expriments.md          # Experiment / ablation design notes
+├── requirements.txt
+├── LICENSE                # MIT
+└── README.md
+```
 
 ## Quick start
 
@@ -33,7 +43,7 @@ pip install -r requirements.txt
 # 2. Install the bundled GCG dependency (llm_attacks)
 cd dependency && pip install -e . && cd ..
 
-# 3. (Optional) If you use API-based models, set your keys as environment variables.
+# 3. (Optional) For API-based models, set keys via environment variables.
 export DASHSCOPE_API_KEY="sk-xxx"      # DashScope / Aliyun Bailian
 # For OpenAI-compatible proxy models (gpt/grok/doubao/...) via zhizengzeng:
 export QZZ_API_KEY="your-key"
@@ -45,9 +55,9 @@ python run_ga.py
 python run_harmful_behaviors.py --target behaviors_original --version full
 ```
 
-> `run_harmful_behaviors.py` reads attack configs from `configs/attack_conf.yaml` and
-> iterates over `dependency/data/advbench/harmful_*.csv`. Model paths in the configs
-> are examples; point them to your own local checkpoints or API model names.
+> `run_harmful_behaviors.py` reads configs from `configs/attack_conf.yaml` and iterates
+> over `dependency/data/advbench/harmful_*.csv`. Model paths in the configs are
+> examples; point them to your own local checkpoints or API model names.
 
 ## Configuration
 
@@ -66,16 +76,6 @@ Edit `configs/attack_conf.yaml`. Key fields:
 | `adv_library` | Path to adversarial library (`.pkl`) to seed the search |
 | `no_ascii` | Restrict perturbations to non-ASCII tokens |
 
-## Top-level scripts
-
-- `run_ga.py` — single-target attack using `configs/attack_conf_debug.yaml`.
-- `run_harmful_behaviors.py` — batch attack over an AdvBench-style dataset, with ASR / avg-iteration metrics.
-- `attack_demo.py` / `demo.py` — small demonstrations of local model inference & API calls.
-- `replay_adv.py` — replay an existing adversarial suffix against a model.
-- `exp.py`, `data_analysis.py`, `hotmap.py`, `temp.py`, `c-statistic.py` — experiment
-  tooling / result analysis (require local `results/` output and optional datasets).
-- `test.py` — CSV preprocessing helper for a benchmark dataset.
-
 ## Reference
 
 The bundled GCG baseline:
@@ -88,3 +88,5 @@ The bundled GCG baseline:
 
 MIT. See [LICENSE](./LICENSE). The bundled `dependency/` directory retains its own
 MIT license from the upstream `llm-attacks` project.
+
+For Chinese documentation, see [README.zh-CN.md](./README.zh-CN.md).
