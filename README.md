@@ -36,14 +36,26 @@ kept, the weakest is never kept, and the tail of the ranking remains reachable
 so the population does not collapse.
 
 <p align="center">
-  <img src="docs/figures/framework.svg" alt="UniBreak framework overview" width="900">
+  <img src="docs/figures/fig2_framework.png" alt="UniBreak framework" width="940">
 </p>
 
 <p align="center"><em>
-Figure 1. UniBreak in one picture. A harmful query q is concatenated with a
-token-level perturbation P, answered by the victim model, and judged. The
-fitness signal drives four evolutionary operators; the perturbation repository
-feeds both the initial population and the mutation prior.
+Fig. 2. The overall framework of the proposed method. For a harmful query, our
+attack proceeds in three steps: (1) testing previously searched perturbations,
+(2) employing GA-based optimization to search for new perturbations if necessary,
+and (3) maintaining the perturbation repository for the next attack.
+</em></p>
+
+### The three operators
+
+<p align="center">
+  <img src="docs/figures/fig4_evolution.png" alt="Evolutionary operators" width="900">
+</p>
+
+<p align="center"><em>
+Fig. 4. The overall evolution process. Three well-designed operators generate the
+next generation: gradient evolve, crossover evolve (gradient-based and
+block-based), and mutation driven by the token statistics of the repository.
 </em></p>
 
 ## Key results
@@ -54,12 +66,13 @@ three victim models reported in the paper. The framework also transfers to
 other scenarios and model sizes.
 
 <p align="center">
-  <img src="docs/figures/asr_gain.png" alt="Reported ASR gain" width="560">
+  <img src="docs/figures/fig8_whitebox.png" alt="White-box performance" width="940">
 </p>
 
 <p align="center"><em>
-Figure 2. White-box ASR gain over the strongest baseline, as reported in the
-paper. Exact baselines and per-model numbers are in the paper's benchmark table.
+Fig. 8. The performance of attacking three different models under the white-box
+scenario, against AutoDAN-GA, AutoDAN-HGA, GCG and AmpleGCG. Reported metrics are
+ASR (attack success rate), TGAE (average generations to a success) and AGAE.
 </em></p>
 
 ## Installation

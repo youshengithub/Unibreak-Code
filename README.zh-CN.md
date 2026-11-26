@@ -30,12 +30,23 @@
 选择环节用三次函数接受概率：最优个体必留、最差必淘汰，同时尾部个体仍有机会被选中，避免种群过早塌缩。
 
 <p align="center">
-  <img src="docs/figures/framework.svg" alt="UniBreak 框架总览" width="900">
+  <img src="docs/figures/fig2_framework.png" alt="UniBreak 框架总览" width="940">
 </p>
 
 <p align="center"><em>
-图 1　UniBreak 整体流程。有害查询 q 与 token 级扰动 P 拼接后送入受害模型，由判定器给出成败；
-适应度信号驱动四个进化算子；扰动库同时为初始种群和变异先验提供支持。
+图 2　方法整体框架。对一条有害查询，攻击分三步进行：(1) 先测试历史搜索到的扰动；
+(2) 若未能攻破，则用遗传算法搜索新的扰动；(3) 维护扰动库，供后续攻击复用。
+</em></p>
+
+### 三个进化算子
+
+<p align="center">
+  <img src="docs/figures/fig4_evolution.png" alt="进化算子" width="900">
+</p>
+
+<p align="center"><em>
+图 4　整体进化流程。三个算子共同生成下一代：梯度进化、交叉进化（基于梯度与基于分块），
+以及由扰动库 token 统计驱动的变异。
 </em></p>
 
 ## 主要结果
@@ -44,11 +55,12 @@
 **62.36**、**57.89**、**64.81** 个百分点；评估实验进一步表明它对多种场景与不同规模的模型同样有效。
 
 <p align="center">
-  <img src="docs/figures/asr_gain.png" alt="论文报告的 ASR 提升" width="560">
+  <img src="docs/figures/fig8_whitebox.png" alt="白盒攻击表现" width="940">
 </p>
 
 <p align="center"><em>
-图 2　白盒场景下相对最强基线的攻击成功率提升（数据取自论文）。具体基线设置与各模型数值见论文基准表。
+图 8　白盒场景下对三个不同模型的攻击表现，对比方法为 AutoDAN-GA、AutoDAN-HGA、GCG 与 AmpleGCG。
+指标为 ASR（攻击成功率）、TGAE（平均成功所需代数）与 AGAE。
 </em></p>
 
 ## 安装
