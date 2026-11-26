@@ -2,7 +2,6 @@ from .Model_manager import model_manager
 from .Utils import get_attack_configs
 from .GA import GA
 from .Fitness_calcution import fitness_calcution
-from dependency.llm_attacks.minimal_gcg.string_utils import load_conversation_template,SuffixManager
 from dependency import get_nonascii_toks
 from .Adv_libraray import adv_library,is_config_equal
 import gc,torch
@@ -27,22 +26,21 @@ class attacker_manager:
         if(model==None):
             model = model_manager(model_path,model_type,device,do_sample)
         if(not isinstance(adv,str)):
-            adv=model.tokenizer.decode(adv.int())
+            adv_ids=adv.to(model.device).int()
+        else:
+            adv_ids=torch.tensor(model.tokenizer(adv,add_special_tokens=False)["input_ids"],device=model.device)
         if model.is_online_model:
-            return model.model_query(input+" "+adv,max_tokens=max_lenght)
-        conv_template = load_conversation_template(model_type)
-        conv_template.set_system_message(prompt)
-        suffix_manager = SuffixManager(tokenizer=model.tokenizer,conv_template=conv_template, instruction=input, target=except_output, adv_string=adv) 
-        input_ids=suffix_manager.get_input_ids(adv) 
-        #下面两种生成方法是等价的 #
-        #测试一下两种方法的速度
-        output_logits=model.generate(input_ids,suffix_manager._control_slice,max_length=max_lenght) #快13%
-        #看看是str吗 output_logits
+            return model.model_query(input+" "+model.tokenizer.decode(adv_ids),max_tokens=max_lenght)
+        # Build the prompt exactly as the search does: goal tokens followed by the
+        # perturbation tokens.  (The bundled SuffixManager relies on older fastchat
+        # conversation templates, so it is deliberately not used here.)
+        goal_ids=model.text2token(input)[0]
+        input_ids=torch.cat([goal_ids,adv_ids],dim=-1)
+        control_slice=slice(len(goal_ids),len(input_ids))
+        output_logits=model.generate(input_ids,control_slice,max_length=max_lenght)
         if(isinstance(output_logits,str)):
             return output_logits
-        output_str= model.tokenizer.decode(output_logits)
-        return output_str
-        # output_str=model.get_output_one_by_one(input_ids[:suffix_manager._control_slice.stop].to(device).unsqueeze(0),max_lenght)
+        return model.tokenizer.decode(output_logits)
         
     def apply_to_configs(self,config):
         #获取model  

@@ -6,12 +6,6 @@ import torch,random,copy
 from tqdm import tqdm
 import numpy as np
 import os
-import tensorboardX as tb
-import pathlib
-
-RUNS_DIR = pathlib.Path("runs")
-RUNS_DIR.mkdir(exist_ok=True)  # 只在需要时创建目录，不删已有日志
-tb_writer = tb.SummaryWriter(log_dir=str(RUNS_DIR))
 class GA: #evloutionary algorithm
     def __init__(self,per_length=10,max_v=10,non_as=None,population_size=10,crossover_num=4,mutaion_tario=0.05,use_gradient=False,attack_type="suffix",tensorboadr_log=False,adv_lib=None,enable_adv_sample=True,enable_mutation_sensitivity=False,enable_crossover_sensitivity=False,enable_calculate_fitness=True,device='cpu') -> None:
         self.population_size=population_size
@@ -58,7 +52,6 @@ class GA: #evloutionary algorithm
                     self.best_per=per
                     return self.best_per,i
             data_bar.set_description(f"Score:{self.pers[0].score}") 
-            if(self.tensorboadr_log==True): tb_writer.add_scalar("score",self.pers[0].score,i)
             if(self.best_per==None or self.best_per.score>self.pers[0].score):
                 self.best_per=copy.deepcopy(self.pers[0])
             ################

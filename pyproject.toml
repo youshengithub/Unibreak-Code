@@ -1,0 +1,45 @@
+[project]
+name = "unibreak"
+version = "1.0.0"
+description = "Official implementation of UniBreak: A Unified Evolutionary Token-Level Jailbreaking Framework for Large Language Models (IEEE TEC 2026)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Shen You" }]
+keywords = ["llm", "jailbreak", "adversarial", "evolutionary-algorithm", "ai-safety"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "torch>=2.4,<2.9",
+    "transformers>=4.40,<5",
+    "numpy>=1.24,<2",
+    "pandas>=2.0",
+    "pyyaml>=6.0",
+    "tqdm>=4.66",
+    "fschat>=0.2.36",
+    "accelerate>=0.30",
+    "sentencepiece>=0.2",
+]
+
+# PyPI's default torch wheel targets the newest CUDA runtime, which fails on
+# older drivers.  Pin the CUDA 12.6 build here; switch the URL to cu128 (or drop
+# this block entirely for CPU-only machines) if your driver differs.
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu126" }
+
+# The code is used from the repository root (``uv run python attack.py``), so
+# there is no need to build/install it as a wheel.
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
