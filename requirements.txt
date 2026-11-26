@@ -1,0 +1,15 @@
+# Unibreak-Core dependencies
+# NOTE: the bundled GCG baseline has its own requirements under dependency/requirements.txt
+torch
+transformers
+numpy
+pandas
+pyyaml
+tqdm
+openai
+dashscope
+langchain-community>=0.0.20
+langchain>=0.1.0
+tensorboardX
+# For OpenAI-compatible / DashScope workflow
+accelerate

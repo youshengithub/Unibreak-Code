@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+
+# Model weights & large artifacts
+models/
+memory_model/
+runs/
+*.zip
+*.gz
+*.bin
+*.pt
+*.pth
+*.safetensors
+*.gguf
+
+# Experiment outputs (local only)
+results/
+adv_library/
+
+# VSCode / IDE
+.vscode/
+.idea/
+
+# Env & secrets (never commit real API keys)
+.env
+.env.*
+*.local
+.bash_history
+
+# Generated CSV (keep AdvBench dataset under dependency/data, exclude ad-hoc outputs)
+*.csv
+!dependency/data/**/*.csv
